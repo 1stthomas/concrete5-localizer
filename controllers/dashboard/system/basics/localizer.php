@@ -88,7 +88,11 @@ class DashboardSystemBasicsLocalizerController extends DashboardBaseController {
 							foreach($ak->getController()->getOptions() as $option) {
 								$selectAttributeValues[$akcHandle][$option->getSelectAttributeOptionID()]['source'] = $option->getSelectAttributeOptionValue(false);
 							}
-						}
+						} elseif ($ak->getAttributeType()->getAttributeTypeHandle() == 'mesch_select_attribute') {
+                                                    foreach($ak->getController()->getOptions() as $option) {
+                                                        $selectAttributeValues[$akcHandle][$option->getSelectAttributeOptionID()]['source'] = $option->getSelectAttributeOptionValue(false);
+                                                    }
+                                                }
 					}
 				}
 				if(isset($attributeKeyNames[$akcHandle])) {
