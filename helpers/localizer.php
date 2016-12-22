@@ -18,6 +18,7 @@ class LocalizerHelper {
 			case 'GroupDescription':
 			case 'GroupSetName':
 			case 'SelectAttributeValue':
+			case 'MeschSelectAttributeValue':
 				return '5.6.2.2b2';
 			default:
 				return '5.6.2';

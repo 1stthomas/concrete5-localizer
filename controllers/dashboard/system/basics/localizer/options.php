@@ -15,6 +15,7 @@ class DashboardSystemBasicsLocalizerOptionsController extends DashboardBaseContr
 			'GroupDescription' => t('User group descriptions'),
 			'GroupSetName' => t('User group set names'),
 			'SelectAttributeValue' => t('Values of the select attributes'),
+			'MeschSelectAttributeValue' => t('Values of the mesch select attributes'),
 			'AreaName' => t('Area names')
 		);
 	}

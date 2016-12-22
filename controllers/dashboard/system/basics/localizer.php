@@ -45,9 +45,13 @@ class DashboardSystemBasicsLocalizerController extends DashboardBaseController {
 			$attributeSetNames = array();
 			$attributeKeyNames = array();
 			$selectAttributeValues = null;
+			$meschSelectAttributeValues = null;
 			$areaNames = null;
 			if($lh->getContextEnabled('SelectAttributeValue')) {
 				$selectAttributeValues = array();
+			}
+			if($lh->getContextEnabled('MeschSelectAttributeValue')) {
+				$meschSelectAttributeValues = array();
 			}
 			if($lh->getContextEnabled('AreaName')) {
 				$areaNames = array();
@@ -90,7 +94,7 @@ class DashboardSystemBasicsLocalizerController extends DashboardBaseController {
 							}
 						} elseif ($ak->getAttributeType()->getAttributeTypeHandle() == 'mesch_select_attribute') {
                                                     foreach($ak->getController()->getOptions() as $option) {
-                                                        $selectAttributeValues[$akcHandle][$option->getSelectAttributeOptionID()]['source'] = $option->getSelectAttributeOptionValue(false);
+                                                        $meschSelectAttributeValues[$akcHandle][$option->getSelectAttributeOptionID()]['source'] = $option->getSelectAttributeOptionValue(false);
                                                     }
                                                 }
 					}
@@ -267,6 +271,14 @@ class DashboardSystemBasicsLocalizerController extends DashboardBaseController {
 					}
 				}
 			}
+			if(is_array($meschSelectAttributeValues)) {
+				foreach(array_keys($meschSelectAttributeValues) as $akcHandle) {
+					foreach(array_keys($meschSelectAttributeValues[$akcHandle]) as $savID) {
+						$localized = isset($_POST["MeschSelectAttributeValue_$savID"]) ? $this->post("MeschSelectAttributeValue_$savID") : tc('MeschSelectAttributeValue', $meschSelectAttributeValues[$akcHandle][$savID]['source']);
+						$meschSelectAttributeValues[$akcHandle][$savID]['translated'] = ($localized == $meschSelectAttributeValues[$akcHandle][$savID]['source']) ? '' : $localized;
+					}
+				}
+			}
 			if($curLocale != $locale) {
 				Localization::changeLocale($curLocale);
 			}
@@ -307,6 +319,9 @@ class DashboardSystemBasicsLocalizerController extends DashboardBaseController {
 			}
 			if($lh->getContextEnabled('SelectAttributeValue')) {
 				$translationTables['SelectAttributeValue'] = array('name' => t('Values of the select attributes'), 'rows' => self::buildTranslationRows('SelectAttributeValue', $selectAttributeValues, $attributeCategories));
+			}
+			if($lh->getContextEnabled('MeschSelectAttributeValue')) {
+				$translationTables['MeschSelectAttributeValue'] = array('name' => t('Values of the select attributes'), 'rows' => self::buildTranslationRows('MeschSelectAttributeValue', $meschSelectAttributeValues, $attributeCategories));
 			}
 			$this->set('translationTables', $translationTables);
 			$currentTable = $this->post('currentTable');
@@ -429,6 +444,13 @@ class DashboardSystemBasicsLocalizerController extends DashboardBaseController {
 											break;
 										case 'SelectAttributeValue':
 											$sav = SelectAttributeTypeOption::getByID($id);
+											if((!is_object($sav)) || $sav->isError()) {
+												throw new Exception(t("Unable to find the select option value with id '%s'", $id));
+											}
+											$translationFileHelper->add($sav->getSelectAttributeOptionValue(false), $translated, $context);
+											break;
+										case 'MeschSelectAttributeValue':
+											$sav = MeschSelectAttributeAttributeTypeOption::getByID($id);
 											if((!is_object($sav)) || $sav->isError()) {
 												throw new Exception(t("Unable to find the select option value with id '%s'", $id));
 											}
