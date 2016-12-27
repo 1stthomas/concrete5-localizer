@@ -321,7 +321,7 @@ class DashboardSystemBasicsLocalizerController extends DashboardBaseController {
 				$translationTables['SelectAttributeValue'] = array('name' => t('Values of the select attributes'), 'rows' => self::buildTranslationRows('SelectAttributeValue', $selectAttributeValues, $attributeCategories));
 			}
 			if($lh->getContextEnabled('MeschSelectAttributeValue')) {
-				$translationTables['MeschSelectAttributeValue'] = array('name' => t('Values of the select attributes'), 'rows' => self::buildTranslationRows('MeschSelectAttributeValue', $meschSelectAttributeValues, $attributeCategories));
+				$translationTables['MeschSelectAttributeValue'] = array('name' => t('Values of the Mesch select attributes'), 'rows' => self::buildTranslationRows('MeschSelectAttributeValue', $meschSelectAttributeValues, $attributeCategories));
 			}
 			$this->set('translationTables', $translationTables);
 			$currentTable = $this->post('currentTable');
